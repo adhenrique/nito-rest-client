@@ -78,4 +78,11 @@ module.exports = {
     'react/sort-comp': 0,
     'require-yield': 0,
   },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["app"]
+      }
+    }
+  }
 };
