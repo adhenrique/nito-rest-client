@@ -1,5 +1,6 @@
 import React from 'react';
+import { Typography } from '@material-ui/core';
 
-const App = () => <p>yay</p>;
+const App = () => <Typography>yay</Typography>;
 
 export default App;
