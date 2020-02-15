@@ -1,6 +1,4 @@
-import {
-  TEST,
-} from './constants';
+import { TEST } from './constants';
 
 export function testAction() {
   return {

@@ -77,6 +77,7 @@ module.exports = {
     'react/self-closing-comp': 0,
     'react/sort-comp': 0,
     'require-yield': 0,
+    'no-param-reassign': ['error', { props: true, ignorePropertyModificationsFor: ['draft'] }],
   },
   "settings": {
     "import/resolver": {

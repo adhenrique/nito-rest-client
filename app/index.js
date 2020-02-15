@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import App from 'components/App';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import GlobalStyle from './theme/globalStyle';
 import { Provider } from 'react-redux';
+import GlobalStyle from './theme/globalStyle';
 import configureStore from './configureStore';
 import theme from './theme';
 
