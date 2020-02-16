@@ -17,7 +17,9 @@ const TreeItem = ({
     <MuiTreeItem
       label={
         <div className={classes.labelRoot}>
-          <LabelIcon color="inherit" className={classes.labelIcon} />
+          {LabelIcon ? (
+            <LabelIcon color="inherit" className={classes.labelIcon} />
+          ) : null}
           <Typography variant="body2" className={classes.labelText}>
             {labelText}
           </Typography>
@@ -28,7 +30,7 @@ const TreeItem = ({
       }
       style={{
         '--tree-view-color': color,
-        '--tree-view-bg-color': bgColor,
+        '--tree-view-bg-color': bgColor || '#eee',
       }}
       classes={{
         root: classes.root,
@@ -37,6 +39,7 @@ const TreeItem = ({
         group: classes.group,
         label: classes.label,
       }}
+      /* eslint-disable-next-line react/jsx-props-no-spreading */
       {...other}
     />
   );

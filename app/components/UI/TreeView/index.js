@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { TreeView as MuiTreeView } from '@material-ui/lab';
 import {
   ArrowDropDown as ArrowDropDownIcon,
@@ -20,6 +21,10 @@ const TreeView = ({ children }) => {
       {children}
     </MuiTreeView>
   );
+};
+
+TreeView.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.array, PropTypes.node]),
 };
 
 export default TreeView;

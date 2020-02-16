@@ -63,7 +63,36 @@ import { SET_COLLECTION } from './constants';
  * */
 
 export const initialState = {
-  collections: [],
+  collections: [
+    {
+      name: 'SGD',
+      variables: [],
+      preScript: '',
+      items: [
+        {
+          name: 'Users',
+          items: [
+            {
+              name: 'Get all',
+              verb: 'GET',
+              url: '/users',
+              queryParams: [],
+              headers: [],
+              body: {},
+            },
+            {
+              name: 'Atualizar',
+              verb: 'POST',
+              url: '/users/1',
+              queryParams: [],
+              headers: [],
+              body: {},
+            },
+          ],
+        },
+      ],
+    },
+  ],
   tabs: [],
 };
 

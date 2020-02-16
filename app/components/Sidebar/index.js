@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import {
   Box,
   List,
@@ -6,17 +7,60 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   IconButton,
+  Typography,
 } from '@material-ui/core';
-import {
-  AddCircleOutline,
-  Mail as MailIcon,
-  SupervisorAccountOutlined as SupervisorAccountIcon,
-} from '@material-ui/icons';
+import { AddCircleOutline, Folder as FolderIcon } from '@material-ui/icons';
 import { Input, TreeView, TreeItem } from 'components/UI';
 import { useStyles } from './styles';
+import Request from './Request';
 
 const Sidebar = () => {
   const classes = useStyles();
+  const { collections } = useSelector(state => state.app);
+
+  function renderTree() {
+    if (collections.length > 0) {
+      return (
+        <TreeView>
+          {collections.map((collection, collectionIndex) => (
+            <TreeItem
+              nodeId={collectionIndex}
+              labelText={collection.name}
+              labelIcon={FolderIcon}
+            >
+              {collection.items.length > 0
+                ? renderCollectionItems(collection, collectionIndex)
+                : null}
+            </TreeItem>
+          ))}
+        </TreeView>
+      );
+    }
+    return <Typography variant="body2">Adicione uma collection</Typography>;
+  }
+
+  function renderCollectionItems(collection, collectionIndex) {
+    return collection.items.map((item, itemIndex) => (
+      <TreeItem
+        nodeId={`${collectionIndex}.${itemIndex}`}
+        labelText={item.name}
+        labelIcon={FolderIcon}
+      >
+        {item.items.length > 0
+          ? renderItemRequests(item, collectionIndex, itemIndex)
+          : null}
+      </TreeItem>
+    ));
+  }
+
+  function renderItemRequests(item, collectionIndex, itemIndex) {
+    return item.items.map((request, requestIndex) => (
+      <TreeItem
+        nodeId={`${collectionIndex}.${itemIndex}.${requestIndex}`}
+        labelText={<Request verb={request.verb} name={request.name} />}
+      />
+    ));
+  }
 
   return (
     <Box>
@@ -32,21 +76,7 @@ const Sidebar = () => {
             </IconButton>
           </ListItemSecondaryAction>
         </ListItem>
-        <ListItem disableGutters>
-          <TreeView>
-            <TreeItem nodeId="1" labelText="Collection" labelIcon={MailIcon}>
-              <TreeItem nodeId="2" labelText="Item" labelIcon={MailIcon}>
-                <TreeItem
-                  nodeId="3"
-                  labelText="Request"
-                  labelIcon={SupervisorAccountIcon}
-                  color="#1a73e8"
-                  bgColor="#e8f0fe"
-                />
-              </TreeItem>
-            </TreeItem>
-          </TreeView>
-        </ListItem>
+        <ListItem disableGutters>{renderTree()}</ListItem>
       </List>
     </Box>
   );

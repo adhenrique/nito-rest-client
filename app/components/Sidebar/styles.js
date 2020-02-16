@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-export const useStyles = makeStyles(() => ({
+export const useStyles = makeStyles({
   list: {
     '& > li': {
       padding: 0,
@@ -13,4 +13,4 @@ export const useStyles = makeStyles(() => ({
   collectionsHeader: {
     borderBottom: '1px solid #ccc',
   },
-}));
+});
