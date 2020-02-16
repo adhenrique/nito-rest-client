@@ -1,6 +1,21 @@
 import React from 'react';
-import { Typography } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
+import Sidebar from 'components/Sidebar';
+import { useStyles } from './styles';
 
-const App = () => <Typography>yay</Typography>;
+const App = () => {
+  const classes = useStyles();
+
+  return (
+    <Grid container>
+      <Grid item className={classes.sidebar}>
+        <Sidebar />
+      </Grid>
+      <Grid item className={classes.stage}>
+        stage
+      </Grid>
+    </Grid>
+  );
+};
 
 export default App;
