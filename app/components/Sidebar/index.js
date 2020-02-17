@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Box,
   List,
@@ -11,12 +11,15 @@ import {
 } from '@material-ui/core';
 import { AddCircleOutline, Folder as FolderIcon } from '@material-ui/icons';
 import { Input, TreeView, TreeItem, MoreOptions } from 'components/UI';
+import { NEW_COLLECTION } from 'components/Dialogs/ids';
+import { callDialog } from 'components/Dialogs/actions';
 import { useStyles } from './styles';
 import Request from './Request';
 
 const Sidebar = () => {
   const classes = useStyles();
   const { collections } = useSelector(state => state.app);
+  const dispatch = useDispatch();
 
   function renderTree() {
     if (collections.length > 0) {
@@ -27,9 +30,7 @@ const Sidebar = () => {
               nodeId={collectionIndex}
               labelText={collection.name}
               labelIcon={FolderIcon}
-              moreOptions={
-                <MoreOptions items={[{ text: 'Adicionar pasta' }]} />
-              }
+              moreOptions={<MoreOptions items={[{ text: 'New folder' }]} />}
             >
               {collection.items.length > 0
                 ? renderCollectionItems(collection, collectionIndex)
@@ -39,7 +40,9 @@ const Sidebar = () => {
         </TreeView>
       );
     }
-    return <Typography variant="body2">Adicione uma collection</Typography>;
+    return (
+      <Typography variant="body2">There are no collections to list</Typography>
+    );
   }
 
   function renderCollectionItems(collection, collectionIndex) {
@@ -48,7 +51,7 @@ const Sidebar = () => {
         nodeId={`${collectionIndex}.${itemIndex}`}
         labelText={item.name}
         labelIcon={FolderIcon}
-        moreOptions={<MoreOptions items={[{ id: 1, text: 'Editar' }]} />}
+        moreOptions={<MoreOptions items={[{ id: 1, text: 'Edit' }]} />}
       >
         {item.items.length > 0
           ? renderItemRequests(item, collectionIndex, itemIndex)
@@ -62,21 +65,29 @@ const Sidebar = () => {
       <TreeItem
         nodeId={`${collectionIndex}.${itemIndex}.${requestIndex}`}
         labelText={<Request verb={request.verb} name={request.name} />}
-        moreOptions={<MoreOptions items={[{ id: 1, text: 'Editar' }]} />}
+        moreOptions={<MoreOptions items={[{ id: 1, text: 'Edit' }]} />}
       />
     ));
+  }
+
+  function openDialog(dialogId) {
+    dispatch(callDialog(dialogId));
   }
 
   return (
     <Box>
       <List disablePadding className={classes.list}>
         <ListItem disableGutters>
-          <Input placeholder="Digite algo..." label="Pesquise" />
+          <Input placeholder="Something..." label="Search" />
         </ListItem>
         <ListItem disableGutters className={classes.collectionsHeader}>
           <ListItemText primary="Collections:" />
           <ListItemSecondaryAction>
-            <IconButton edge="end" aria-label="add">
+            <IconButton
+              edge="end"
+              aria-label="add"
+              onClick={() => openDialog(NEW_COLLECTION)}
+            >
               <AddCircleOutline />
             </IconButton>
           </ListItemSecondaryAction>

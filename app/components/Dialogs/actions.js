@@ -1,7 +1,17 @@
-import { TEST } from './constants';
+import { CALL_DIALOG, CLOSE_DIALOG } from './constants';
 
-export function testAction() {
+export function callDialog(id, parameters) {
   return {
-    type: TEST,
+    type: CALL_DIALOG,
+    payload: {
+      id,
+      parameters: parameters || {},
+    },
+  };
+}
+
+export function closeDialog() {
+  return {
+    type: CLOSE_DIALOG,
   };
 }

@@ -1,5 +1,4 @@
-import React from "react";
-import PropTypes from 'prop-types';
+import React from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -7,20 +6,36 @@ import {
   DialogActions,
   Button,
 } from '@material-ui/core';
+import { useSelector, useDispatch } from 'react-redux';
+import { NEW_COLLECTION } from 'components/Dialogs/ids';
+import { closeDialog } from 'components/Dialogs/actions';
+import { Input } from 'components/UI';
 
-const NewCollectionDialog = ({ open }) => {
+const NewCollectionDialog = () => {
+  const { id } = useSelector(state => state.dialogs);
+  const dispatch = useDispatch();
+
+  function handleClose() {
+    dispatch(closeDialog());
+  }
+
   return (
-    <Dialog open={open}>
+    <Dialog
+      open={id === NEW_COLLECTION}
+      onClose={handleClose}
+      fullWidth
+      maxWidth="sm"
+    >
       <DialogTitle id="form-dialog-title">New Collection</DialogTitle>
       <DialogContent>
-        <p>asd</p>
+        <Input placeholder="Enter a name" label="Name" />
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => {}} color="primary">
+        <Button onClick={handleClose} color="primary">
           Cancel
         </Button>
         <Button onClick={() => {}} color="primary">
-          Ok
+          Save
         </Button>
       </DialogActions>
     </Dialog>
