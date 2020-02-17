@@ -5,3 +5,4 @@ export { default as MoreOptions } from './MoreOptions';
 export { default as Tabs } from './Tabs';
 export { default as Tab } from './Tabs/Tab';
 export { default as TabPanel } from './Tabs/TabPanel';
+export { default as Duplicate } from './Duplicate';

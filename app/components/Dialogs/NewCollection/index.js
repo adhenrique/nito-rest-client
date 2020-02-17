@@ -9,7 +9,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { NEW_COLLECTION } from 'components/Dialogs/ids';
 import { closeDialog } from 'components/Dialogs/actions';
-import { Input, Tabs, Tab, TabPanel } from 'components/UI';
+import { Input, Tabs, Tab, TabPanel, Duplicate } from 'components/UI';
 
 const NewCollectionDialog = () => {
   const { id } = useSelector(state => state.dialogs);
@@ -39,7 +39,7 @@ const NewCollectionDialog = () => {
           <Tab label="Pre scripts" />
         </Tabs>
         <TabPanel value={value} index={0}>
-          Variables
+          <Duplicate />
         </TabPanel>
         <TabPanel value={value} index={1}>
           Pre scripts
