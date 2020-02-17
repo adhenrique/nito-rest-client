@@ -8,6 +8,7 @@ const TreeItem = ({
   labelText,
   labelIcon: LabelIcon,
   labelInfo,
+  moreOptions,
   color,
   bgColor,
   ...other
@@ -17,15 +18,18 @@ const TreeItem = ({
     <MuiTreeItem
       label={
         <div className={classes.labelRoot}>
-          {LabelIcon ? (
+          {LabelIcon && (
             <LabelIcon color="inherit" className={classes.labelIcon} />
-          ) : null}
+          )}
           <Typography variant="body2" className={classes.labelText}>
             {labelText}
           </Typography>
-          <Typography variant="caption" color="inherit">
-            {labelInfo}
-          </Typography>
+          {labelInfo && (
+            <Typography variant="caption" color="inherit">
+              {labelInfo}
+            </Typography>
+          )}
+          {moreOptions}
         </div>
       }
       style={{
@@ -45,12 +49,17 @@ const TreeItem = ({
   );
 };
 
+TreeItem.defaultProps = {
+  moreOptions: null,
+};
+
 TreeItem.propTypes = {
   bgColor: PropTypes.string,
   color: PropTypes.string,
-  labelIcon: PropTypes.elementType.isRequired,
-  labelInfo: PropTypes.string,
+  labelIcon: PropTypes.elementType,
   labelText: PropTypes.string.isRequired,
+  labelInfo: PropTypes.string,
+  moreOptions: PropTypes.node,
 };
 
 export default TreeItem;

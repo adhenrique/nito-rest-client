@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { AddCircleOutline, Folder as FolderIcon } from '@material-ui/icons';
-import { Input, TreeView, TreeItem } from 'components/UI';
+import { Input, TreeView, TreeItem, MoreOptions } from 'components/UI';
 import { useStyles } from './styles';
 import Request from './Request';
 
@@ -27,6 +27,9 @@ const Sidebar = () => {
               nodeId={collectionIndex}
               labelText={collection.name}
               labelIcon={FolderIcon}
+              moreOptions={
+                <MoreOptions items={[{ text: 'Adicionar pasta' }]} />
+              }
             >
               {collection.items.length > 0
                 ? renderCollectionItems(collection, collectionIndex)
@@ -45,6 +48,7 @@ const Sidebar = () => {
         nodeId={`${collectionIndex}.${itemIndex}`}
         labelText={item.name}
         labelIcon={FolderIcon}
+        moreOptions={<MoreOptions items={[{ id: 1, text: 'Editar' }]} />}
       >
         {item.items.length > 0
           ? renderItemRequests(item, collectionIndex, itemIndex)
@@ -58,6 +62,7 @@ const Sidebar = () => {
       <TreeItem
         nodeId={`${collectionIndex}.${itemIndex}.${requestIndex}`}
         labelText={<Request verb={request.verb} name={request.name} />}
+        moreOptions={<MoreOptions items={[{ id: 1, text: 'Editar' }]} />}
       />
     ));
   }
