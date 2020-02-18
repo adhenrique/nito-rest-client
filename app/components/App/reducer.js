@@ -63,36 +63,7 @@ import { SET_COLLECTION } from './constants';
  * */
 
 export const initialState = {
-  collections: [
-    {
-      name: 'SGD',
-      variables: [],
-      preScript: '',
-      items: [
-        {
-          name: 'Users',
-          items: [
-            {
-              name: 'Get all',
-              verb: 'GET',
-              url: '/users',
-              queryParams: [],
-              headers: [],
-              body: {},
-            },
-            {
-              name: 'Atualizar',
-              verb: 'POST',
-              url: '/users/1',
-              queryParams: [],
-              headers: [],
-              body: {},
-            },
-          ],
-        },
-      ],
-    },
-  ],
+  collections: [],
   tabs: [],
 };
 
@@ -101,6 +72,7 @@ const appReducer = (state = initialState, action) =>
     switch (action.type) {
       case SET_COLLECTION:
         draft.collections.push({
+          id: action.payload.id,
           name: action.payload.name,
           variables: action.payload.variables,
           preScript: action.payload.preScript,

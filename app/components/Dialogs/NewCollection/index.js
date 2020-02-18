@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, memo } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -9,19 +9,56 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { NEW_COLLECTION } from 'components/Dialogs/ids';
 import { closeDialog } from 'components/Dialogs/actions';
+import { setCollection } from 'components/App/actions';
 import { Input, Tabs, Tab, TabPanel, Duplicate } from 'components/UI';
 
 const NewCollectionDialog = () => {
   const { id } = useSelector(state => state.dialogs);
   const dispatch = useDispatch();
-  const [value, setValue] = React.useState(0);
+  const [tab, setTab] = useState(0);
+  const [data, setData] = useState({
+    name: '',
+    variables: [],
+    preScript: '',
+  });
 
   function handleCloseDialog() {
     dispatch(closeDialog());
   }
 
+  function handleSave() {
+    dispatch(setCollection({ ...data }));
+    handleCloseDialog();
+  }
+
+  function handleCancel() {
+    handleCloseDialog();
+  }
+
   function handleChangeTab(event, newValue) {
-    setValue(newValue);
+    setTab(newValue);
+  }
+
+  function handleChangeVariables(variables) {
+    setData({
+      ...data,
+      variables,
+    });
+  }
+
+  function handleChangePrescripts(e) {
+    setData({
+      ...data,
+      preScript: e.target.value,
+    });
+  }
+
+  function handleChangeName(e) {
+    // setData({
+    //   ...data,
+    //   name: e.target.value,
+    // });
+    console.log('e', e);
   }
 
   return (
@@ -33,23 +70,33 @@ const NewCollectionDialog = () => {
     >
       <DialogTitle id="form-dialog-title">New Collection</DialogTitle>
       <DialogContent>
-        <Input placeholder="Enter a name" label="Name" />
-        <Tabs value={value} onChange={handleChangeTab}>
+        <Input
+          placeholder="Enter a name"
+          label="Name"
+          onChange={handleChangeName}
+        />
+        <Tabs value={tab} onChange={handleChangeTab}>
           <Tab label="Variables" />
           <Tab label="Pre scripts" />
         </Tabs>
-        <TabPanel value={value} index={0}>
-          <Duplicate />
+        <TabPanel value={tab} index={0}>
+          <Duplicate onChange={handleChangeVariables} />
         </TabPanel>
-        <TabPanel value={value} index={1}>
-          Pre scripts
+        <TabPanel value={tab} index={1}>
+          <Input
+            onChange={handleChangePrescripts}
+            placeholder="Pré scripts"
+            label="Pré scripts"
+            multiline
+            rows={10}
+          />
         </TabPanel>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleCloseDialog} color="primary">
+        <Button onClick={handleCancel} color="primary">
           Cancel
         </Button>
-        <Button onClick={() => {}} color="primary">
+        <Button onClick={handleSave} color="primary">
           Save
         </Button>
       </DialogActions>
@@ -57,4 +104,4 @@ const NewCollectionDialog = () => {
   );
 };
 
-export default NewCollectionDialog;
+export default memo(NewCollectionDialog);

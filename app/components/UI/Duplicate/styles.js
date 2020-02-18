@@ -3,6 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 export const useStyles = makeStyles({
   line: {
     alignItems: 'center',
+    '&:not(:last-child)': {
+      marginBottom: 10,
+    },
     '& > div:nth-child(1)': {
       flex: 1,
     },
@@ -13,7 +16,10 @@ export const useStyles = makeStyles({
   spacer: {
     margin: '0px 10px',
   },
-  action: {
+  add: {
+    marginBottom: 10,
+  },
+  remove: {
     margin: '0px 10px',
   },
 });

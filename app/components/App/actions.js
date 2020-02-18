@@ -1,7 +1,15 @@
-import { TEST } from './constants';
+import { generateFakeID } from 'helpers';
+import { SET_COLLECTION } from './constants';
 
-export function testAction() {
+export function setCollection(name, variables, preScript) {
+  const id = generateFakeID();
   return {
-    type: TEST,
+    type: SET_COLLECTION,
+    payload: {
+      id,
+      name,
+      variables,
+      preScript,
+    },
   };
 }
