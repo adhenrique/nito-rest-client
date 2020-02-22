@@ -5,6 +5,7 @@ import {
   DialogContent,
   DialogActions,
   Button,
+  Box,
 } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 import { NEW_COLLECTION } from 'components/Dialogs/ids';
@@ -12,10 +13,12 @@ import { closeDialog, updateParameters } from 'components/Dialogs/actions';
 import { setCollection, updateCollection } from 'components/App/actions';
 import { Input, Tabs, Tab, TabPanel, Duplicate } from 'components/UI';
 import { pathOr } from 'ramda';
+import { useStyles } from './styles';
 
 const Collection = () => {
   const { id, parameters } = useSelector(state => state.dialogs);
   const dispatch = useDispatch();
+  const classes = useStyles();
   const [tab, setTab] = useState(0);
 
   function handleCloseDialog() {
@@ -76,26 +79,29 @@ const Collection = () => {
       fullWidth
       maxWidth="sm"
       onExited={() => setTab(0)}
+      classes={{ paper: classes.root }}
     >
       <DialogTitle id="form-dialog-title">New Collection</DialogTitle>
-      <DialogContent>
-        <Input
-          placeholder="Enter a name"
-          label="Name"
-          onChange={handleChangeName}
-          value={pathOr('', ['name'], parameters)}
-        />
-        <Tabs value={tab} onChange={handleChangeTab}>
-          <Tab selected label="Variables" />
-          <Tab label="Pre scripts" />
-        </Tabs>
-        <TabPanel value={tab} index={0}>
+      <DialogContent className={classes.content}>
+        <Box>
+          <Input
+            placeholder="Enter a name"
+            label="Name"
+            onChange={handleChangeName}
+            value={pathOr('', ['name'], parameters)}
+          />
+          <Tabs value={tab} onChange={handleChangeTab}>
+            <Tab selected label="Variables" />
+            <Tab label="Pre scripts" />
+          </Tabs>
+        </Box>
+        <TabPanel value={tab} index={0} className={classes.tabContent}>
           <Duplicate
             onChange={handleChangeVariables}
             data={pathOr([], ['variables'], parameters)}
           />
         </TabPanel>
-        <TabPanel value={tab} index={1}>
+        <TabPanel value={tab} index={1} className={classes.tabContent}>
           <Input
             onChange={handleChangePrescripts}
             placeholder="Pré scripts"
