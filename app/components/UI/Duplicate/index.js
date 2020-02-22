@@ -5,9 +5,14 @@ import { Input } from 'components/UI';
 import { RemoveCircle } from '@material-ui/icons';
 import { useStyles } from './styles';
 
-const Duplicate = ({ onChange }) => {
+const Duplicate = ({ onChange, data }) => {
   const classes = useStyles();
-  const [lines, setLines] = useState([{ key: '', value: '' }]);
+  const [lines, setLines] = useState(() => {
+    if (data.length > 0) {
+      return data;
+    }
+    return [{ key: '', value: '' }];
+  });
 
   function renderLines() {
     return lines.map((line, lineIndex) => (
@@ -63,9 +68,18 @@ const Duplicate = ({ onChange }) => {
   }
 
   function handleChange(event, i, field) {
-    const values = [...lines];
-    values[i][field] = event.target.value;
-    setLines(values);
+    // const values = [...lines];
+    // values[i][field] = event.target.value;
+    // setLines(values);
+    const newState = [
+      ...lines.slice(0, i),
+      {
+        ...lines[i],
+        [field]: event.target.value,
+      },
+      ...lines.slice(i + 1),
+    ];
+    setLines(newState);
   }
 
   useEffect(() => {
@@ -84,10 +98,12 @@ const Duplicate = ({ onChange }) => {
 
 Duplicate.defaultProps = {
   onChange: () => {},
+  data: [],
 };
 
 Duplicate.propTypes = {
   onChange: PropTypes.func,
+  data: PropTypes.array,
 };
 
 export default memo(Duplicate);

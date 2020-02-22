@@ -21,6 +21,15 @@ const Sidebar = () => {
   const { collections } = useSelector(state => state.app);
   const dispatch = useDispatch();
 
+  const collectionMoreOptions = [
+    {
+      text: 'Edit',
+      onClick: (_, context) => openDialog(NEW_COLLECTION, context),
+    },
+    { text: 'Delete' },
+    { text: 'New folder' },
+  ];
+
   function renderTree() {
     if (collections.length > 0) {
       return (
@@ -31,7 +40,12 @@ const Sidebar = () => {
               nodeId={`${collectionIndex}`}
               labelText={collection.name}
               labelIcon={FolderIcon}
-              moreOptions={<MoreOptions items={[{ text: 'New folder' }]} />}
+              moreOptions={
+                <MoreOptions
+                  items={collectionMoreOptions}
+                  context={collection}
+                />
+              }
             >
               {collection.items.length > 0
                 ? renderCollectionItems(collection, collectionIndex)
@@ -73,8 +87,8 @@ const Sidebar = () => {
     ));
   }
 
-  function openDialog(dialogId) {
-    dispatch(callDialog(dialogId));
+  function openDialog(dialogId, params = {}) {
+    dispatch(callDialog(dialogId, params));
   }
 
   return (

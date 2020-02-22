@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
 import Sidebar from 'components/Sidebar';
-import { NewCollectionDialog } from 'components/Dialogs';
+import { CollectionDialog } from 'components/Dialogs';
 import { useStyles } from './styles';
 
 const App = () => {
@@ -15,7 +15,7 @@ const App = () => {
       <Grid item className={classes.stage}>
         stage
       </Grid>
-      <NewCollectionDialog />
+      <CollectionDialog />
     </Grid>
   );
 };

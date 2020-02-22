@@ -1,4 +1,4 @@
-import { CALL_DIALOG, CLOSE_DIALOG } from './constants';
+import { CALL_DIALOG, CLOSE_DIALOG, UPDATE_PARAMETERS } from './constants';
 
 export function callDialog(id, parameters) {
   return {
@@ -13,5 +13,14 @@ export function callDialog(id, parameters) {
 export function closeDialog() {
   return {
     type: CLOSE_DIALOG,
+  };
+}
+
+export function updateParameters(parameters) {
+  return {
+    type: UPDATE_PARAMETERS,
+    payload: {
+      ...parameters,
+    },
   };
 }

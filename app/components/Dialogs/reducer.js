@@ -1,5 +1,5 @@
 import produce from 'immer';
-import { CALL_DIALOG, CLOSE_DIALOG } from './constants';
+import { CALL_DIALOG, CLOSE_DIALOG, UPDATE_PARAMETERS } from './constants';
 
 export const initialState = {
   id: '',
@@ -16,6 +16,11 @@ const dialogsReducer = (state = initialState, action) =>
       case CLOSE_DIALOG:
         draft.id = '';
         draft.parameters = {};
+        break;
+      case UPDATE_PARAMETERS:
+        Object.entries(action.payload).forEach(([k, v]) => {
+          draft.parameters[k] = v;
+        });
         break;
       default:
         break;

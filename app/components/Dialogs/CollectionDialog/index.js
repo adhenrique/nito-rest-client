@@ -8,26 +8,26 @@ import {
 } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 import { NEW_COLLECTION } from 'components/Dialogs/ids';
-import { closeDialog } from 'components/Dialogs/actions';
-import { setCollection } from 'components/App/actions';
+import { closeDialog, updateParameters } from 'components/Dialogs/actions';
+import { setCollection, updateCollection } from 'components/App/actions';
 import { Input, Tabs, Tab, TabPanel, Duplicate } from 'components/UI';
+import { pathOr } from 'ramda';
 
-const NewCollectionDialog = () => {
-  const { id } = useSelector(state => state.dialogs);
+const Collection = () => {
+  const { id, parameters } = useSelector(state => state.dialogs);
   const dispatch = useDispatch();
   const [tab, setTab] = useState(0);
-  const [data, setData] = useState({
-    name: '',
-    variables: [],
-    preScript: '',
-  });
 
   function handleCloseDialog() {
     dispatch(closeDialog());
   }
 
   function handleSave() {
-    dispatch(setCollection(data));
+    if (parameters.id) {
+      dispatch(updateCollection(parameters, parameters.id));
+    } else {
+      dispatch(setCollection(parameters));
+    }
     handleCloseDialog();
   }
 
@@ -39,25 +39,34 @@ const NewCollectionDialog = () => {
     setTab(newValue);
   }
 
-  const handleChangeVariables = useCallback(variables => {
-    setData(c => ({
-      ...c,
-      variables,
-    }));
-  }, []);
+  const handleChangeVariables = useCallback(
+    variables => {
+      dispatch(
+        updateParameters({
+          ...parameters,
+          variables,
+        }),
+      );
+    },
+    [dispatch, parameters],
+  );
 
   function handleChangePrescripts(e) {
-    setData({
-      ...data,
-      preScript: e.target.value,
-    });
+    dispatch(
+      updateParameters({
+        ...parameters,
+        preScript: e.target.value,
+      }),
+    );
   }
 
   function handleChangeName(e) {
-    setData({
-      ...data,
-      name: e.target.value,
-    });
+    dispatch(
+      updateParameters({
+        ...parameters,
+        name: e.target.value,
+      }),
+    );
   }
 
   return (
@@ -66,6 +75,7 @@ const NewCollectionDialog = () => {
       onClose={handleCloseDialog}
       fullWidth
       maxWidth="sm"
+      onExited={() => setTab(0)}
     >
       <DialogTitle id="form-dialog-title">New Collection</DialogTitle>
       <DialogContent>
@@ -73,13 +83,17 @@ const NewCollectionDialog = () => {
           placeholder="Enter a name"
           label="Name"
           onChange={handleChangeName}
+          value={pathOr('', ['name'], parameters)}
         />
         <Tabs value={tab} onChange={handleChangeTab}>
-          <Tab label="Variables" />
+          <Tab selected label="Variables" />
           <Tab label="Pre scripts" />
         </Tabs>
         <TabPanel value={tab} index={0}>
-          <Duplicate onChange={handleChangeVariables} />
+          <Duplicate
+            onChange={handleChangeVariables}
+            data={pathOr([], ['variables'], parameters)}
+          />
         </TabPanel>
         <TabPanel value={tab} index={1}>
           <Input
@@ -88,6 +102,7 @@ const NewCollectionDialog = () => {
             label="Pré scripts"
             multiline
             rows={10}
+            value={pathOr('', ['preScript'], parameters)}
           />
         </TabPanel>
       </DialogContent>
@@ -103,4 +118,4 @@ const NewCollectionDialog = () => {
   );
 };
 
-export default NewCollectionDialog;
+export default Collection;

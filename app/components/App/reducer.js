@@ -1,5 +1,5 @@
 import produce from 'immer';
-import { SET_COLLECTION } from './constants';
+import { SET_COLLECTION, UPDATE_COLLECTION } from './constants';
 
 /**
  * state example:
@@ -77,6 +77,13 @@ const appReducer = (state = initialState, action) =>
           variables: action.payload.variables,
           preScript: action.payload.preScript,
           items: [],
+        });
+        break;
+      case UPDATE_COLLECTION:
+        Object.entries(action.payload).forEach(([k, v]) => {
+          draft.collections.find(
+            collection => collection.id === action.payload.id,
+          )[k] = v;
         });
         break;
       default:

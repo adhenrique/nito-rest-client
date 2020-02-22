@@ -1,1 +1,1 @@
-export { default as NewCollectionDialog } from './NewCollection';
+export { default as CollectionDialog } from './CollectionDialog';
