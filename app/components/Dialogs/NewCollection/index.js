@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -27,7 +27,7 @@ const NewCollectionDialog = () => {
   }
 
   function handleSave() {
-    dispatch(setCollection({ ...data }));
+    dispatch(setCollection(data));
     handleCloseDialog();
   }
 
@@ -39,12 +39,12 @@ const NewCollectionDialog = () => {
     setTab(newValue);
   }
 
-  function handleChangeVariables(variables) {
-    setData({
-      ...data,
+  const handleChangeVariables = useCallback(variables => {
+    setData(c => ({
+      ...c,
       variables,
-    });
-  }
+    }));
+  }, []);
 
   function handleChangePrescripts(e) {
     setData({
@@ -54,11 +54,10 @@ const NewCollectionDialog = () => {
   }
 
   function handleChangeName(e) {
-    // setData({
-    //   ...data,
-    //   name: e.target.value,
-    // });
-    console.log('e', e);
+    setData({
+      ...data,
+      name: e.target.value,
+    });
   }
 
   return (
@@ -104,4 +103,4 @@ const NewCollectionDialog = () => {
   );
 };
 
-export default memo(NewCollectionDialog);
+export default NewCollectionDialog;

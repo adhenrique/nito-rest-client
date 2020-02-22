@@ -76,6 +76,7 @@ const appReducer = (state = initialState, action) =>
           name: action.payload.name,
           variables: action.payload.variables,
           preScript: action.payload.preScript,
+          items: [],
         });
         break;
       default:

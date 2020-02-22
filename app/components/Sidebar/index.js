@@ -27,7 +27,8 @@ const Sidebar = () => {
         <TreeView>
           {collections.map((collection, collectionIndex) => (
             <TreeItem
-              nodeId={collectionIndex}
+              key={`treeitem-${collectionIndex.toString()}`}
+              nodeId={`${collectionIndex}`}
               labelText={collection.name}
               labelIcon={FolderIcon}
               moreOptions={<MoreOptions items={[{ text: 'New folder' }]} />}
@@ -48,6 +49,7 @@ const Sidebar = () => {
   function renderCollectionItems(collection, collectionIndex) {
     return collection.items.map((item, itemIndex) => (
       <TreeItem
+        key={`treeitem-${collectionIndex.toString()}.${itemIndex.toString()}`}
         nodeId={`${collectionIndex}.${itemIndex}`}
         labelText={item.name}
         labelIcon={FolderIcon}
@@ -63,6 +65,7 @@ const Sidebar = () => {
   function renderItemRequests(item, collectionIndex, itemIndex) {
     return item.items.map((request, requestIndex) => (
       <TreeItem
+        key={`treeitem-${collectionIndex.toString()}.${itemIndex.toString()}.${requestIndex.toString()}`}
         nodeId={`${collectionIndex}.${itemIndex}.${requestIndex}`}
         labelText={<Request verb={request.verb} name={request.name} />}
         moreOptions={<MoreOptions items={[{ id: 1, text: 'Edit' }]} />}

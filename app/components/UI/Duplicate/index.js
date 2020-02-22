@@ -11,7 +11,12 @@ const Duplicate = ({ onChange }) => {
 
   function renderLines() {
     return lines.map((line, lineIndex) => (
-      <Grid id="template-line" container className={classes.line}>
+      <Grid
+        key={`line-${lineIndex.toString()}`}
+        id="template-line"
+        container
+        className={classes.line}
+      >
         <Grid item>
           <Input
             placeholder="Key"
@@ -63,7 +68,9 @@ const Duplicate = ({ onChange }) => {
     setLines(values);
   }
 
-  useEffect(() => () => onChange(lines));
+  useEffect(() => {
+    onChange(lines);
+  }, [lines, onChange]);
 
   return (
     <>
