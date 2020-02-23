@@ -16,7 +16,7 @@ import { pathOr } from 'ramda';
 import { useStyles } from './styles';
 import VariablesTabPanel from './TabPanels/Variables';
 import PrescriptsTabPanel from './TabPanels/Prescripts';
-import AuthorizationTabPanel from './TabPanels/Auth';
+import AuthorizationTabPanel from './TabPanels/Authorization';
 
 const Collection = () => {
   const { id, parameters } = useSelector(state => state.dialogs);
@@ -81,7 +81,7 @@ const Collection = () => {
           />
           <Tabs value={tab} onChange={handleChangeTab}>
             <Tab selected label="Variables" />
-            <Tab label="Authorization" disabled />
+            <Tab label="Authorization" />
             <Tab label="Pre scripts" />
           </Tabs>
         </Box>

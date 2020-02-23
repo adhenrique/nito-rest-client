@@ -12,4 +12,10 @@ export const useStyles = makeStyles(() => ({
   tabContent: {
     overflow: 'auto',
   },
+  authContent: {
+    marginTop: 20,
+  },
+  inputs: {
+    marginBottom: 20,
+  },
 }));

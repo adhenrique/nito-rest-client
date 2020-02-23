@@ -68,9 +68,6 @@ const Duplicate = ({ onChange, data }) => {
   }
 
   function handleChange(event, i, field) {
-    // const values = [...lines];
-    // values[i][field] = event.target.value;
-    // setLines(values);
     const newState = [
       ...lines.slice(0, i),
       {

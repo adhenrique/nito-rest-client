@@ -13,6 +13,10 @@ import {
     {
       name: '',
       variables: [],
+      authorization: {
+        mode: '',
+        params: {}
+      },
       preScript: '',
       items: [
         name: '',
@@ -79,6 +83,7 @@ const appReducer = (state = initialState, action) =>
           id: action.payload.id,
           name: action.payload.name,
           variables: action.payload.variables,
+          authorization: action.payload.authorization,
           preScript: action.payload.preScript,
           items: [],
         });
