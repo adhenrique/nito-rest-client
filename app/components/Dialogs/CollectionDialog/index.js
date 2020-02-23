@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -11,9 +11,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { NEW_COLLECTION } from 'components/Dialogs/ids';
 import { closeDialog, updateParameters } from 'components/Dialogs/actions';
 import { setCollection, updateCollection } from 'components/App/actions';
-import { Input, Tabs, Tab, TabPanel, Duplicate } from 'components/UI';
+import { Input, Tabs, Tab } from 'components/UI';
 import { pathOr } from 'ramda';
 import { useStyles } from './styles';
+import VariablesTabPanel from './TabPanels/Variables';
+import PrescriptsTabPanel from './TabPanels/Prescripts';
+import AuthorizationTabPanel from './TabPanels/Auth';
 
 const Collection = () => {
   const { id, parameters } = useSelector(state => state.dialogs);
@@ -42,27 +45,6 @@ const Collection = () => {
     setTab(newValue);
   }
 
-  const handleChangeVariables = useCallback(
-    variables => {
-      dispatch(
-        updateParameters({
-          ...parameters,
-          variables,
-        }),
-      );
-    },
-    [dispatch, parameters],
-  );
-
-  function handleChangePrescripts(e) {
-    dispatch(
-      updateParameters({
-        ...parameters,
-        preScript: e.target.value,
-      }),
-    );
-  }
-
   function handleChangeName(e) {
     dispatch(
       updateParameters({
@@ -70,6 +52,13 @@ const Collection = () => {
         name: e.target.value,
       }),
     );
+  }
+
+  function renderTitle() {
+    if (parameters.id) {
+      return 'Edit a Collection';
+    }
+    return 'Create new Collection';
   }
 
   return (
@@ -81,7 +70,7 @@ const Collection = () => {
       onExited={() => setTab(0)}
       classes={{ paper: classes.root }}
     >
-      <DialogTitle id="form-dialog-title">New Collection</DialogTitle>
+      <DialogTitle id="form-dialog-title">{renderTitle()}</DialogTitle>
       <DialogContent className={classes.content}>
         <Box>
           <Input
@@ -92,25 +81,13 @@ const Collection = () => {
           />
           <Tabs value={tab} onChange={handleChangeTab}>
             <Tab selected label="Variables" />
+            <Tab label="Authorization" disabled />
             <Tab label="Pre scripts" />
           </Tabs>
         </Box>
-        <TabPanel value={tab} index={0} className={classes.tabContent}>
-          <Duplicate
-            onChange={handleChangeVariables}
-            data={pathOr([], ['variables'], parameters)}
-          />
-        </TabPanel>
-        <TabPanel value={tab} index={1} className={classes.tabContent}>
-          <Input
-            onChange={handleChangePrescripts}
-            placeholder="Pré scripts"
-            label="Pré scripts"
-            multiline
-            rows={10}
-            value={pathOr('', ['preScript'], parameters)}
-          />
-        </TabPanel>
+        <VariablesTabPanel parameters={parameters} tab={tab} />
+        <AuthorizationTabPanel parameters={parameters} tab={tab} />
+        <PrescriptsTabPanel parameters={parameters} tab={tab} />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleCancel} color="primary">
