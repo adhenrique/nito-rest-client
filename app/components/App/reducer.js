@@ -1,5 +1,9 @@
 import produce from 'immer';
-import { SET_COLLECTION, UPDATE_COLLECTION } from './constants';
+import {
+  REMOVE_COLLECTION,
+  SET_COLLECTION,
+  UPDATE_COLLECTION,
+} from './constants';
 
 /**
  * state example:
@@ -85,6 +89,11 @@ const appReducer = (state = initialState, action) =>
             collection => collection.id === action.payload.id,
           )[k] = v;
         });
+        break;
+      case REMOVE_COLLECTION:
+        draft.collections = draft.collections.filter(
+          collection => collection.id !== action.payload.id,
+        );
         break;
       default:
         break;

@@ -12,7 +12,8 @@ import {
 import { AddCircleOutline, Folder as FolderIcon } from '@material-ui/icons';
 import { Input, TreeView, TreeItem, MoreOptions } from 'components/UI';
 import { COLLECTION, CONFIRM } from 'components/Dialogs/ids';
-import { callDialog } from 'components/Dialogs/actions';
+import { callDialog, closeDialog } from 'components/Dialogs/actions';
+import { removeCollection } from 'components/App/actions';
 import { useStyles } from './styles';
 import Request from './Request';
 
@@ -28,11 +29,14 @@ const Sidebar = () => {
     },
     {
       text: 'Delete',
-      onClick: () =>
+      onClick: (_, context) =>
         openDialog(CONFIRM, {
           title: 'Are u sure?',
           content: 'All of folders and configs will be deleted...',
-          callback: () => alert('ok'),
+          callback: () => {
+            dispatch(removeCollection(context.id));
+            dispatch(closeDialog());
+          },
         }),
     },
     { text: 'New folder' },
