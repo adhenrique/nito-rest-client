@@ -1,1 +1,2 @@
-export const NEW_COLLECTION = 'NEW_COLLECTION';
+export const COLLECTION = 'COLLECTION';
+export const CONFIRM = 'CONFIRM';

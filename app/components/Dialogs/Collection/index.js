@@ -8,7 +8,7 @@ import {
   Box,
 } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
-import { NEW_COLLECTION } from 'components/Dialogs/ids';
+import { COLLECTION } from 'components/Dialogs/ids';
 import { closeDialog, updateParameters } from 'components/Dialogs/actions';
 import { setCollection, updateCollection } from 'components/App/actions';
 import { Input, Tabs, Tab } from 'components/UI';
@@ -63,14 +63,14 @@ const Collection = () => {
 
   return (
     <Dialog
-      open={id === NEW_COLLECTION}
+      open={id === COLLECTION}
       onClose={handleCloseDialog}
       fullWidth
       maxWidth="sm"
       onExited={() => setTab(0)}
       classes={{ paper: classes.root }}
     >
-      <DialogTitle id="form-dialog-title">{renderTitle()}</DialogTitle>
+      <DialogTitle id="collection-dialog-title">{renderTitle()}</DialogTitle>
       <DialogContent className={classes.content}>
         <Box>
           <Input

@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import { AddCircleOutline, Folder as FolderIcon } from '@material-ui/icons';
 import { Input, TreeView, TreeItem, MoreOptions } from 'components/UI';
-import { NEW_COLLECTION } from 'components/Dialogs/ids';
+import { COLLECTION, CONFIRM } from 'components/Dialogs/ids';
 import { callDialog } from 'components/Dialogs/actions';
 import { useStyles } from './styles';
 import Request from './Request';
@@ -24,9 +24,17 @@ const Sidebar = () => {
   const collectionMoreOptions = [
     {
       text: 'Edit',
-      onClick: (_, context) => openDialog(NEW_COLLECTION, context),
+      onClick: (_, context) => openDialog(COLLECTION, context),
     },
-    { text: 'Delete' },
+    {
+      text: 'Delete',
+      onClick: () =>
+        openDialog(CONFIRM, {
+          title: 'Are u sure?',
+          content: 'All of folders and configs will be deleted...',
+          callback: () => alert('ok'),
+        }),
+    },
     { text: 'New folder' },
   ];
 
@@ -103,7 +111,7 @@ const Sidebar = () => {
             <IconButton
               edge="end"
               aria-label="add"
-              onClick={() => openDialog(NEW_COLLECTION)}
+              onClick={() => openDialog(COLLECTION)}
             >
               <AddCircleOutline />
             </IconButton>
