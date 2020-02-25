@@ -11,9 +11,13 @@ import {
 } from '@material-ui/core';
 import { AddCircleOutline, Folder as FolderIcon } from '@material-ui/icons';
 import { Input, TreeView, TreeItem, MoreOptions } from 'components/UI';
-import { COLLECTION, CONFIRM, FOLDER } from 'components/Dialogs/ids';
+import { COLLECTION, CONFIRM, FOLDER, REQUEST } from 'components/Dialogs/ids';
 import { callDialog, closeDialog } from 'components/Dialogs/actions';
-import { removeCollection, removeFolder } from 'components/App/actions';
+import {
+  removeCollection,
+  removeCollectionItem,
+  removeItemRequest,
+} from 'components/App/actions';
 import { useStyles } from './styles';
 import Request from './Request';
 
@@ -41,7 +45,7 @@ const Sidebar = () => {
     },
     {
       text: 'New folder',
-      onClick: (_, context) => openDialog(FOLDER, { id: context.id }),
+      onClick: (_, context) => openDialog(FOLDER, { collectionId: context.id }),
     },
   ];
 
@@ -57,7 +61,38 @@ const Sidebar = () => {
           title: 'Are u sure?',
           content: 'All of request will be deleted...',
           callback: () => {
-            dispatch(removeFolder(context.id, context.index));
+            dispatch(
+              removeCollectionItem(context.collectionId, context.itemIndex),
+            );
+            dispatch(closeDialog());
+          },
+        }),
+    },
+    {
+      text: 'New Request',
+      onClick: (_, context) => openDialog(REQUEST, context),
+    },
+  ];
+
+  const requestMoreOptions = [
+    {
+      text: 'Edit',
+      onClick: (_, context) => openDialog(REQUEST, context),
+    },
+    {
+      text: 'Delete',
+      onClick: (_, context) =>
+        openDialog(CONFIRM, {
+          title: 'Are u sure?',
+          content: 'All request config will be deleted...',
+          callback: () => {
+            dispatch(
+              removeItemRequest(
+                context.collectionId,
+                context.itemIndex,
+                context.requestIndex,
+              ),
+            );
             dispatch(closeDialog());
           },
         }),
@@ -109,25 +144,44 @@ const Sidebar = () => {
           moreOptions={
             <MoreOptions
               items={folderMoreOptions}
-              context={{ ...itemProps, index: itemIndex, id: collection.id }}
+              context={{
+                item: itemProps,
+                itemIndex,
+                collectionId: collection.id,
+              }}
             />
           }
         >
           {item.items.length > 0
-            ? renderItemRequests(item, collectionIndex, itemIndex)
+            ? renderItemRequests(
+              item, // eslint-disable-line
+              collectionIndex, // eslint-disable-line
+              itemIndex, // eslint-disable-line
+              collection.id, // eslint-disable-line
+            ) // eslint-disable-line
             : null}
         </TreeItem>
       );
     });
   }
 
-  function renderItemRequests(item, collectionIndex, itemIndex) {
+  function renderItemRequests(item, collectionIndex, itemIndex, collectionId) {
     return item.items.map((request, requestIndex) => (
       <TreeItem
         key={`treeitem-${collectionIndex.toString()}.${itemIndex.toString()}.${requestIndex.toString()}`}
         nodeId={`${collectionIndex}.${itemIndex}.${requestIndex}`}
         labelText={<Request verb={request.verb} name={request.name} />}
-        moreOptions={<MoreOptions items={[{ id: 1, text: 'Edit' }]} />}
+        moreOptions={
+          <MoreOptions
+            items={requestMoreOptions}
+            context={{
+              request,
+              itemIndex,
+              requestIndex,
+              collectionId,
+            }}
+          />
+        }
       />
     ));
   }

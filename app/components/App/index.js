@@ -5,6 +5,7 @@ import {
   CollectionDialog,
   ConfirmDialog,
   FolderDialog,
+  RequestDialog,
 } from 'components/Dialogs';
 import { useStyles } from './styles';
 
@@ -22,6 +23,7 @@ const App = () => {
       <CollectionDialog />
       <ConfirmDialog />
       <FolderDialog />
+      <RequestDialog />
     </Grid>
   );
 };

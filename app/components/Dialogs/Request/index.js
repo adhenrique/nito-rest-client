@@ -10,14 +10,13 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { pathOr } from 'ramda';
 import { Input } from 'components/UI';
-import {
-  setCollectionItem,
-  updateCollectionItem,
-} from 'components/App/actions';
+import { setItemRequest, updateItemRequest } from 'components/App/actions';
 import { closeDialog, updateParameters } from '../actions';
-import { FOLDER } from '../ids';
+import { REQUEST } from '../ids';
+import { useStyles } from './styles';
 
-const Folder = () => {
+const Request = () => {
+  const classes = useStyles();
   const { id, parameters } = useSelector(state => state.dialogs);
   const dispatch = useDispatch();
 
@@ -30,27 +29,40 @@ const Folder = () => {
   }
 
   function handleSave() {
-    if (parameters.itemIndex >= 0) {
+    if (parameters.requestIndex >= 0) {
       dispatch(
-        updateCollectionItem(
+        updateItemRequest(
           parameters.collectionId,
           parameters.itemIndex,
-          parameters.item,
+          parameters.requestIndex,
+          parameters.request,
         ),
       );
     } else {
-      dispatch(setCollectionItem(parameters));
+      dispatch(setItemRequest(parameters));
     }
     handleCloseDialog();
   }
 
-  function handleChangeFolderName(e) {
+  function handleChangeRequestName(e) {
     dispatch(
       updateParameters({
         ...parameters,
-        item: {
-          ...parameters.item,
+        request: {
+          ...parameters.request,
           name: e.target.value,
+        },
+      }),
+    );
+  }
+
+  function handleChangeRequestDescription(e) {
+    dispatch(
+      updateParameters({
+        ...parameters,
+        request: {
+          ...parameters.request,
+          description: e.target.value,
         },
       }),
     );
@@ -58,7 +70,7 @@ const Folder = () => {
 
   return (
     <Dialog
-      open={id === FOLDER}
+      open={id === REQUEST}
       onClose={handleCloseDialog}
       fullWidth
       maxWidth="sm"
@@ -67,10 +79,19 @@ const Folder = () => {
       <DialogContent>
         <Typography>{parameters.content}</Typography>
         <Input
-          onChange={handleChangeFolderName}
-          placeholder="Folder name"
-          label="Folder name"
-          value={pathOr('', ['item', 'name'], parameters)}
+          onChange={handleChangeRequestName}
+          placeholder="Request name"
+          label="Request name"
+          value={pathOr('', ['request', 'name'], parameters)}
+          className={classes.inputs}
+        />
+        <Input
+          onChange={handleChangeRequestDescription}
+          placeholder="Description (optional)"
+          label="Description"
+          multiline
+          rows={10}
+          value={pathOr('', ['request', 'description'], parameters)}
         />
       </DialogContent>
       <DialogActions>
@@ -85,4 +106,4 @@ const Folder = () => {
   );
 };
 
-export default Folder;
+export default Request;

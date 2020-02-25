@@ -6,6 +6,9 @@ import {
   SET_COLLECTION_ITEM,
   UPDATE_COLLECTION_ITEM,
   REMOVE_COLLECTION_ITEM,
+  SET_ITEM_REQUEST,
+  UPDATE_ITEM_REQUEST,
+  REMOVE_ITEM_REQUEST,
 } from './constants';
 
 export function setCollection(data) {
@@ -58,11 +61,43 @@ export function updateCollectionItem(id, index, data) {
   };
 }
 
-export function removeFolder(id, index) {
+export function removeCollectionItem(id, index) {
   return {
     type: REMOVE_COLLECTION_ITEM,
     payload: {
       id,
+      index,
+    },
+  };
+}
+
+export function setItemRequest(data) {
+  return {
+    type: SET_ITEM_REQUEST,
+    payload: {
+      ...data,
+    },
+  };
+}
+
+export function updateItemRequest(id, itemIndex, index, data) {
+  return {
+    type: UPDATE_ITEM_REQUEST,
+    payload: {
+      id,
+      itemIndex,
+      index,
+      data,
+    },
+  };
+}
+
+export function removeItemRequest(id, itemIndex, index) {
+  return {
+    type: REMOVE_ITEM_REQUEST,
+    payload: {
+      id,
+      itemIndex,
       index,
     },
   };

@@ -6,6 +6,9 @@ import {
   SET_COLLECTION_ITEM,
   UPDATE_COLLECTION_ITEM,
   REMOVE_COLLECTION_ITEM,
+  SET_ITEM_REQUEST,
+  UPDATE_ITEM_REQUEST,
+  REMOVE_ITEM_REQUEST,
 } from './constants';
 
 /**
@@ -90,6 +93,7 @@ export const initialState = {
           items: [
             {
               name: 'bbbb',
+              description: 'ccc',
               verb: 'GET',
               url: '/users',
               queryParams: [],
@@ -134,9 +138,9 @@ const appReducer = (state = initialState, action) =>
         break;
       case SET_COLLECTION_ITEM:
         draft.collections
-          .find(collection => collection.id === action.payload.id)
+          .find(collection => collection.id === action.payload.collectionId)
           .items.push({
-            name: action.payload.name,
+            name: action.payload.item.name,
             items: [],
           });
         break;
@@ -151,6 +155,37 @@ const appReducer = (state = initialState, action) =>
         draft.collections
           .find(collection => collection.id === action.payload.id)
           .items.splice(action.payload.index, 1);
+        break;
+      case SET_ITEM_REQUEST:
+        draft.collections
+          .find(collection => collection.id === action.payload.collectionId)
+          .items[action.payload.itemIndex].items.push({
+            name: action.payload.request.name,
+            description: action.payload.request.description,
+            verb: 'GET',
+            url: '',
+            queryParams: [],
+            headers: [],
+            body: {
+              mode: '',
+              raw: '',
+            },
+          });
+        break;
+      case UPDATE_ITEM_REQUEST:
+        Object.entries(action.payload.data).forEach(([k, v]) => {
+          draft.collections.find(
+            collection => collection.id === action.payload.id,
+          ).items[action.payload.itemIndex].items[action.payload.index][k] = v;
+        });
+        break;
+      case REMOVE_ITEM_REQUEST:
+        draft.collections
+          .find(collection => collection.id === action.payload.id)
+          .items[action.payload.itemIndex].items.splice(
+            action.payload.index,
+            1,
+          );
         break;
       default:
         break;
