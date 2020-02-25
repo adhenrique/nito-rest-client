@@ -3,6 +3,8 @@ import {
   REMOVE_COLLECTION,
   SET_COLLECTION,
   UPDATE_COLLECTION,
+  SET_COLLECTION_ITEM,
+  UPDATE_COLLECTION_ITEM,
 } from './constants';
 
 export function setCollection(data) {
@@ -31,6 +33,26 @@ export function removeCollection(id) {
     type: REMOVE_COLLECTION,
     payload: {
       id,
+    },
+  };
+}
+
+export function setCollectionItem(data) {
+  return {
+    type: SET_COLLECTION_ITEM,
+    payload: {
+      ...data,
+    },
+  };
+}
+
+export function updateCollectionItem(id, index, data) {
+  return {
+    type: UPDATE_COLLECTION_ITEM,
+    payload: {
+      id,
+      index,
+      data,
     },
   };
 }

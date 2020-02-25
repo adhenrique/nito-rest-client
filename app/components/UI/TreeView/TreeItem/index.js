@@ -57,7 +57,8 @@ TreeItem.propTypes = {
   bgColor: PropTypes.string,
   color: PropTypes.string,
   labelIcon: PropTypes.elementType,
-  labelText: PropTypes.string.isRequired,
+  labelText: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+    .isRequired,
   labelInfo: PropTypes.string,
   moreOptions: PropTypes.node,
 };

@@ -1,7 +1,11 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
 import Sidebar from 'components/Sidebar';
-import { CollectionDialog, ConfirmDialog } from 'components/Dialogs';
+import {
+  CollectionDialog,
+  ConfirmDialog,
+  FolderDialog,
+} from 'components/Dialogs';
 import { useStyles } from './styles';
 
 const App = () => {
@@ -17,6 +21,7 @@ const App = () => {
       </Grid>
       <CollectionDialog />
       <ConfirmDialog />
+      <FolderDialog />
     </Grid>
   );
 };

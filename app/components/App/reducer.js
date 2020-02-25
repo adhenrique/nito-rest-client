@@ -3,6 +3,8 @@ import {
   REMOVE_COLLECTION,
   SET_COLLECTION,
   UPDATE_COLLECTION,
+  SET_COLLECTION_ITEM,
+  UPDATE_COLLECTION_ITEM,
 } from './constants';
 
 /**
@@ -71,7 +73,36 @@ import {
  * */
 
 export const initialState = {
-  collections: [],
+  collections: [
+    {
+      id: 123456,
+      name: 'ASDASD',
+      variables: [],
+      authorization: {
+        mode: '',
+        params: {},
+      },
+      preScript: '',
+      items: [
+        {
+          name: 'xxx',
+          items: [
+            {
+              name: 'bbbb',
+              verb: 'GET',
+              url: '/users',
+              queryParams: [],
+              headers: [],
+              body: {
+                mode: '',
+                raw: '',
+              },
+            },
+          ],
+        },
+      ],
+    },
+  ],
   tabs: [],
 };
 
@@ -99,6 +130,21 @@ const appReducer = (state = initialState, action) =>
         draft.collections = draft.collections.filter(
           collection => collection.id !== action.payload.id,
         );
+        break;
+      case SET_COLLECTION_ITEM:
+        draft.collections
+          .find(collection => collection.id === action.payload.id)
+          .items.push({
+            name: action.payload.name,
+            items: [],
+          });
+        break;
+      case UPDATE_COLLECTION_ITEM:
+        Object.entries(action.payload.data).forEach(([k, v]) => {
+          draft.collections.find(
+            collection => collection.id === action.payload.id,
+          ).items[action.payload.index][k] = v;
+        });
         break;
       default:
         break;

@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import { AddCircleOutline, Folder as FolderIcon } from '@material-ui/icons';
 import { Input, TreeView, TreeItem, MoreOptions } from 'components/UI';
-import { COLLECTION, CONFIRM } from 'components/Dialogs/ids';
+import { COLLECTION, CONFIRM, FOLDER } from 'components/Dialogs/ids';
 import { callDialog, closeDialog } from 'components/Dialogs/actions';
 import { removeCollection } from 'components/App/actions';
 import { useStyles } from './styles';
@@ -39,7 +39,17 @@ const Sidebar = () => {
           },
         }),
     },
-    { text: 'New folder' },
+    {
+      text: 'New folder',
+      onClick: (_, context) => openDialog(FOLDER, { id: context.id }),
+    },
+  ];
+
+  const folderMoreOptions = [
+    {
+      text: 'Edit',
+      onClick: (_, context) => openDialog(FOLDER, context),
+    },
   ];
 
   function renderTree() {
@@ -73,19 +83,30 @@ const Sidebar = () => {
   }
 
   function renderCollectionItems(collection, collectionIndex) {
-    return collection.items.map((item, itemIndex) => (
-      <TreeItem
-        key={`treeitem-${collectionIndex.toString()}.${itemIndex.toString()}`}
-        nodeId={`${collectionIndex}.${itemIndex}`}
-        labelText={item.name}
-        labelIcon={FolderIcon}
-        moreOptions={<MoreOptions items={[{ id: 1, text: 'Edit' }]} />}
-      >
-        {item.items.length > 0
-          ? renderItemRequests(item, collectionIndex, itemIndex)
-          : null}
-      </TreeItem>
-    ));
+    return collection.items.map((item, itemIndex) => {
+      const itemProps = Object.keys(item)
+        .filter(k => !['items'].includes(k))
+        .map(k => ({ [k]: item[k] }))
+        .reduce((res, o) => Object.assign(res, o), {});
+      return (
+        <TreeItem
+          key={`treeitem-${collectionIndex.toString()}.${itemIndex.toString()}`}
+          nodeId={`${collectionIndex}.${itemIndex}`}
+          labelText={item.name}
+          labelIcon={FolderIcon}
+          moreOptions={
+            <MoreOptions
+              items={folderMoreOptions}
+              context={{ ...itemProps, index: itemIndex, id: collection.id }}
+            />
+          }
+        >
+          {item.items.length > 0
+            ? renderItemRequests(item, collectionIndex, itemIndex)
+            : null}
+        </TreeItem>
+      );
+    });
   }
 
   function renderItemRequests(item, collectionIndex, itemIndex) {
