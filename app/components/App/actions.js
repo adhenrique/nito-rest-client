@@ -5,6 +5,7 @@ import {
   UPDATE_COLLECTION,
   SET_COLLECTION_ITEM,
   UPDATE_COLLECTION_ITEM,
+  REMOVE_COLLECTION_ITEM,
 } from './constants';
 
 export function setCollection(data) {
@@ -53,6 +54,16 @@ export function updateCollectionItem(id, index, data) {
       id,
       index,
       data,
+    },
+  };
+}
+
+export function removeFolder(id, index) {
+  return {
+    type: REMOVE_COLLECTION_ITEM,
+    payload: {
+      id,
+      index,
     },
   };
 }

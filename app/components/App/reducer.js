@@ -5,6 +5,7 @@ import {
   UPDATE_COLLECTION,
   SET_COLLECTION_ITEM,
   UPDATE_COLLECTION_ITEM,
+  REMOVE_COLLECTION_ITEM,
 } from './constants';
 
 /**
@@ -145,6 +146,11 @@ const appReducer = (state = initialState, action) =>
             collection => collection.id === action.payload.id,
           ).items[action.payload.index][k] = v;
         });
+        break;
+      case REMOVE_COLLECTION_ITEM:
+        draft.collections
+          .find(collection => collection.id === action.payload.id)
+          .items.splice(action.payload.index, 1);
         break;
       default:
         break;
