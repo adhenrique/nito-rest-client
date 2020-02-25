@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   Box,
@@ -23,8 +23,9 @@ import Request from './Request';
 
 const Sidebar = () => {
   const classes = useStyles();
-  const { collections } = useSelector(state => state.app);
   const dispatch = useDispatch();
+  const { collections } = useSelector(state => state.app);
+  const [localCollections, setLocalCollections] = useState([]);
 
   const collectionMoreOptions = [
     {
@@ -100,10 +101,10 @@ const Sidebar = () => {
   ];
 
   function renderTree() {
-    if (collections.length > 0) {
+    if (localCollections.length > 0) {
       return (
         <TreeView>
-          {collections.map((collection, collectionIndex) => (
+          {localCollections.map((collection, collectionIndex) => (
             <TreeItem
               key={`treeitem-${collectionIndex.toString()}`}
               nodeId={`${collectionIndex}`}
@@ -190,11 +191,30 @@ const Sidebar = () => {
     dispatch(callDialog(dialogId, params));
   }
 
+  function filteredItems(e) {
+    const { value } = e.target;
+    let filtered = collections;
+    filtered = filtered.filter(
+      collection =>
+        collection.name.toLowerCase().indexOf(value.toLowerCase()) >= 0,
+    );
+
+    setLocalCollections(filtered);
+  }
+
+  useEffect(() => {
+    setLocalCollections(collections);
+  }, [collections]);
+
   return (
     <Box>
       <List disablePadding className={classes.list}>
         <ListItem disableGutters>
-          <Input placeholder="Something..." label="Search" />
+          <Input
+            placeholder="Enter something..."
+            label="Search Collection"
+            onChange={filteredItems}
+          />
         </ListItem>
         <ListItem disableGutters className={classes.collectionsHeader}>
           <ListItemText primary="Collections:" />
