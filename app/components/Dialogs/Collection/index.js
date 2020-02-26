@@ -30,7 +30,7 @@ const Collection = () => {
 
   function handleSave() {
     if (parameters.id) {
-      dispatch(updateCollection(parameters, parameters.id));
+      dispatch(updateCollection(parameters.id, parameters));
     } else {
       dispatch(setCollection(parameters));
     }

@@ -22,7 +22,7 @@ export function setCollection(data) {
   };
 }
 
-export function updateCollection(data, id) {
+export function updateCollection(id, data) {
   return {
     type: UPDATE_COLLECTION,
     payload: {
@@ -42,63 +42,65 @@ export function removeCollection(id) {
 }
 
 export function setCollectionItem(data) {
+  const id = generateFakeID();
   return {
     type: SET_COLLECTION_ITEM,
     payload: {
+      id,
       ...data,
     },
   };
 }
 
-export function updateCollectionItem(id, index, data) {
+export function updateCollectionItem(collectionId, data) {
   return {
     type: UPDATE_COLLECTION_ITEM,
     payload: {
-      id,
-      index,
+      collectionId,
       data,
     },
   };
 }
 
-export function removeCollectionItem(id, index) {
+export function removeCollectionItem(collectionId, itemId) {
   return {
     type: REMOVE_COLLECTION_ITEM,
     payload: {
-      id,
-      index,
+      collectionId,
+      itemId,
     },
   };
 }
 
 export function setItemRequest(data) {
+  const id = generateFakeID();
   return {
     type: SET_ITEM_REQUEST,
     payload: {
+      id,
       ...data,
     },
   };
 }
 
-export function updateItemRequest(id, itemIndex, index, data) {
+export function updateItemRequest(collectionId, itemId, data) {
   return {
     type: UPDATE_ITEM_REQUEST,
     payload: {
-      id,
-      itemIndex,
-      index,
+      collectionId,
+      itemId,
       data,
     },
   };
 }
 
-export function removeItemRequest(id, itemIndex, index) {
+export function removeItemRequest(collectionId, itemId, requestId) {
   return {
     type: REMOVE_ITEM_REQUEST,
     payload: {
-      id,
-      itemIndex,
-      index,
+      collectionId,
+      itemId,
+      requestId,
     },
   };
 }

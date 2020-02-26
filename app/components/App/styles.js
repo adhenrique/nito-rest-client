@@ -7,6 +7,7 @@ export const useStyles = makeStyles(() => ({
     padding: 20,
   },
   stage: {
+    width: 'calc(100% - 350px)',
     padding: 20,
   },
 }));

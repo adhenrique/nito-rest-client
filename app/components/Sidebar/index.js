@@ -63,7 +63,7 @@ const Sidebar = () => {
           content: 'All of request will be deleted...',
           callback: () => {
             dispatch(
-              removeCollectionItem(context.collectionId, context.itemIndex),
+              removeCollectionItem(context.collectionId, context.item.id),
             );
             dispatch(closeDialog());
           },
@@ -90,8 +90,8 @@ const Sidebar = () => {
             dispatch(
               removeItemRequest(
                 context.collectionId,
-                context.itemIndex,
-                context.requestIndex,
+                context.item.id,
+                context.request.id,
               ),
             );
             dispatch(closeDialog());
@@ -146,9 +146,8 @@ const Sidebar = () => {
             <MoreOptions
               items={folderMoreOptions}
               context={{
-                item: itemProps,
-                itemIndex,
                 collectionId: collection.id,
+                item: itemProps,
               }}
             />
           }
@@ -176,10 +175,9 @@ const Sidebar = () => {
           <MoreOptions
             items={requestMoreOptions}
             context={{
-              request,
-              itemIndex,
-              requestIndex,
               collectionId,
+              item,
+              request,
             }}
           />
         }

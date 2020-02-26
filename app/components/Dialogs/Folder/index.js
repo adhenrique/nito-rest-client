@@ -30,14 +30,8 @@ const Folder = () => {
   }
 
   function handleSave() {
-    if (parameters.itemIndex >= 0) {
-      dispatch(
-        updateCollectionItem(
-          parameters.collectionId,
-          parameters.itemIndex,
-          parameters.item,
-        ),
-      );
+    if (parameters.item.id) {
+      dispatch(updateCollectionItem(parameters.collectionId, parameters.item));
     } else {
       dispatch(setCollectionItem(parameters));
     }

@@ -29,12 +29,11 @@ const Request = () => {
   }
 
   function handleSave() {
-    if (parameters.requestIndex >= 0) {
+    if (parameters.request.id) {
       dispatch(
         updateItemRequest(
           parameters.collectionId,
-          parameters.itemIndex,
-          parameters.requestIndex,
+          parameters.item.id,
           parameters.request,
         ),
       );

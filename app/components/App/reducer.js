@@ -89,9 +89,11 @@ export const initialState = {
       preScript: '',
       items: [
         {
+          id: 2222,
           name: 'xxx',
           items: [
             {
+              id: 3333,
               name: 'bbbb',
               description: 'ccc',
               verb: 'GET',
@@ -110,6 +112,23 @@ export const initialState = {
   ],
   tabs: [],
 };
+
+function removeCollectionItem(draft, payload) {
+  const collection = draft.collections.find(
+    item => item.id === payload.collectionId,
+  );
+  collection.items = collection.items.filter(
+    item => item.id !== payload.itemId,
+  );
+}
+
+function removeRequestItem(draft, payload) {
+  const items = draft.collections
+    .find(item => item.id === payload.collectionId)
+    .items.find(item => item.id === payload.itemId);
+
+  items.items = items.items.filter(item => item.id !== payload.requestId);
+}
 
 const appReducer = (state = initialState, action) =>
   produce(state, draft => {
@@ -140,26 +159,27 @@ const appReducer = (state = initialState, action) =>
         draft.collections
           .find(collection => collection.id === action.payload.collectionId)
           .items.push({
+            id: action.payload.id,
             name: action.payload.item.name,
             items: [],
           });
         break;
       case UPDATE_COLLECTION_ITEM:
         Object.entries(action.payload.data).forEach(([k, v]) => {
-          draft.collections.find(
-            collection => collection.id === action.payload.id,
-          ).items[action.payload.index][k] = v;
+          draft.collections
+            .find(collection => collection.id === action.payload.collectionId)
+            .items.find(item => item.id === action.payload.data.id)[k] = v;
         });
         break;
       case REMOVE_COLLECTION_ITEM:
-        draft.collections
-          .find(collection => collection.id === action.payload.id)
-          .items.splice(action.payload.index, 1);
+        removeCollectionItem(draft, action.payload);
         break;
       case SET_ITEM_REQUEST:
         draft.collections
           .find(collection => collection.id === action.payload.collectionId)
-          .items[action.payload.itemIndex].items.push({
+          .items.find(item => item.id === action.payload.item.id)
+          .items.push({
+            id: action.payload.id,
             name: action.payload.request.name,
             description: action.payload.request.description,
             verb: 'GET',
@@ -174,18 +194,14 @@ const appReducer = (state = initialState, action) =>
         break;
       case UPDATE_ITEM_REQUEST:
         Object.entries(action.payload.data).forEach(([k, v]) => {
-          draft.collections.find(
-            collection => collection.id === action.payload.id,
-          ).items[action.payload.itemIndex].items[action.payload.index][k] = v;
+          draft.collections
+            .find(collection => collection.id === action.payload.collectionId)
+            .items.find(item => item.id === action.payload.itemId)
+            .items.find(item => item.id === action.payload.data.id)[k] = v;
         });
         break;
       case REMOVE_ITEM_REQUEST:
-        draft.collections
-          .find(collection => collection.id === action.payload.id)
-          .items[action.payload.itemIndex].items.splice(
-            action.payload.index,
-            1,
-          );
+        removeRequestItem(draft, action.payload);
         break;
       default:
         break;
