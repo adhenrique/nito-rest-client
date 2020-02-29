@@ -7,6 +7,7 @@ import {
   FolderDialog,
   RequestDialog,
 } from 'components/Dialogs';
+import Stage from 'components/Stage';
 import { useStyles } from './styles';
 
 const App = () => {
@@ -18,7 +19,7 @@ const App = () => {
         <Sidebar />
       </Grid>
       <Grid item className={classes.stage}>
-        stage
+        <Stage />
       </Grid>
       <CollectionDialog />
       <ConfirmDialog />

@@ -17,6 +17,7 @@ import {
   removeCollection,
   removeCollectionItem,
   removeItemRequest,
+  setTab,
 } from 'components/App/actions';
 import { useStyles } from './styles';
 import Request from './Request';
@@ -24,7 +25,7 @@ import Request from './Request';
 const Sidebar = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { collections } = useSelector(state => state.app);
+  const { collections, tabs } = useSelector(state => state.app);
   const [localCollections, setLocalCollections] = useState([]);
 
   const collectionMoreOptions = [
@@ -165,12 +166,20 @@ const Sidebar = () => {
     });
   }
 
+  function openTab(request, collectionId, itemId) {
+    const alreadyOpen = tabs.filter(tab => tab.id === request.id).length;
+    if (!alreadyOpen) {
+      dispatch(setTab({ ...request, collectionId, itemId }));
+    }
+  }
+
   function renderItemRequests(item, collectionIndex, itemIndex, collectionId) {
     return item.items.map((request, requestIndex) => (
       <TreeItem
         key={`treeitem-${collectionIndex.toString()}.${itemIndex.toString()}.${requestIndex.toString()}`}
         nodeId={`${collectionIndex}.${itemIndex}.${requestIndex}`}
         labelText={<Request verb={request.verb} name={request.name} />}
+        onClick={() => openTab(request, collectionId, item.id)}
         moreOptions={
           <MoreOptions
             items={requestMoreOptions}

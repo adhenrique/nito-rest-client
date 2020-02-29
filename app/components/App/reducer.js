@@ -9,6 +9,8 @@ import {
   SET_ITEM_REQUEST,
   UPDATE_ITEM_REQUEST,
   REMOVE_ITEM_REQUEST,
+  SET_TAB,
+  REMOVE_TAB_BY_REQUEST_ID,
 } from './constants';
 
 /**
@@ -202,6 +204,14 @@ const appReducer = (state = initialState, action) =>
         break;
       case REMOVE_ITEM_REQUEST:
         removeRequestItem(draft, action.payload);
+        break;
+      case SET_TAB:
+        draft.tabs.push(action.payload.data);
+        break;
+      case REMOVE_TAB_BY_REQUEST_ID:
+        draft.tabs = draft.tabs.filter(
+          tab => tab.id !== action.payload.requestId,
+        );
         break;
       default:
         break;

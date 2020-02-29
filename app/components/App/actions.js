@@ -9,6 +9,8 @@ import {
   SET_ITEM_REQUEST,
   UPDATE_ITEM_REQUEST,
   REMOVE_ITEM_REQUEST,
+  SET_TAB,
+  REMOVE_TAB_BY_REQUEST_ID,
 } from './constants';
 
 export function setCollection(data) {
@@ -100,6 +102,26 @@ export function removeItemRequest(collectionId, itemId, requestId) {
     payload: {
       collectionId,
       itemId,
+      requestId,
+    },
+  };
+}
+
+// abrir tab
+export function setTab(data) {
+  return {
+    type: SET_TAB,
+    payload: {
+      data,
+    },
+  };
+}
+
+// fechar tab
+export function removeTabByRequestId(requestId) {
+  return {
+    type: REMOVE_TAB_BY_REQUEST_ID,
+    payload: {
       requestId,
     },
   };

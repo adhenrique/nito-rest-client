@@ -30,3 +30,10 @@ export function getVerbColors(verb) {
   }
   return obj;
 }
+
+export function a11yProps(prefix, index) {
+  return {
+    id: `${prefix}-${index}`,
+    'aria-controls': `${prefix}-${index}`,
+  };
+}
